@@ -1,0 +1,40 @@
+#
+#		X.Org module default exclusion patterns
+#		The next section if for module specific patterns
+#
+#	Do not edit the following section
+# 	GNU Build System (Autotools)
+
+#	Do not edit the following section
+# 	Edit Compile Debug Document Distribute
+*~
+*.[0-9]
+*.[0-9]x
+*.bak
+*.bin
+core
+*.dll
+*.exe
+*-ISO*.bdf
+*-JIS*.bdf
+*-KOI8*.bdf
+*.kld
+*.ko
+*.ko.cmd
+*.lai
+*.l[oa]
+*.[oad]
+*.obj
+*.patch
+*.so
+*.pcf.gz
+*.pdb
+*.tar.bz2
+*.tar.gz
+#
+#		Add & Override patterns
+#
+#		Edit the following section as needed
+# For example, !report.pc overrides *.pc. See 'man gitignore'
+# 
+kws_*
