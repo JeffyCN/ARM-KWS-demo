@@ -2,20 +2,14 @@
 # more information, see http://mbed.org/handbook/Exporting-to-GCC-ARM-Embedded
 
 ###############################################################################
-# Project settings
-
-PROJECT := kws_test
-
-# Project settings
-###############################################################################
 # Boiler-plate
 
 V ?= 0
 DEBUG ?= 0
-TARGET ?= $(PROJECT)
 PLATFORM ?= linux
 CPU ?= a9
 HARDFP ?= 1
+REALTIME ?= 0
 
 # Use 'make V=1' to see the full commands
 ifeq ($(V),1)
@@ -47,12 +41,17 @@ else
 
 KWS_SRC_DIR = KWS/Deployment/Source/
 
-SOURCE_DIRS += Source/ \
-	       CMSIS_5/Source/ \
+SOURCE_DIRS += CMSIS_5/Source/ \
 	       $(KWS_SRC_DIR)/KWS/ \
 	       $(KWS_SRC_DIR)/MFCC/ \
 	       $(KWS_SRC_DIR)/NN/ \
 	       $(KWS_SRC_DIR)/local_NN/
+
+ifeq ($(REALTIME),1)
+SOURCE_DIRS += realtime_test/
+else
+SOURCE_DIRS += simple_test/
+endif
 
 C_SOURCES += $(shell find $(SOURCE_DIRS) -name '*.c')
 CXX_SOURCES += $(shell find $(SOURCE_DIRS) -name "*.cpp")
@@ -63,6 +62,16 @@ INCLUDE_PATHS += $(shell find $(SOURCE_DIRS) -type d) \
 		 CMSIS_5/Include \
 
 # Objects and Paths
+###############################################################################
+# Project settings
+
+ifeq ($(REALTIME),1)
+PROJECT := kws_realtime_test
+else
+PROJECT := kws_test
+endif
+
+# Project settings
 ###############################################################################
 # Tools and Flags
 

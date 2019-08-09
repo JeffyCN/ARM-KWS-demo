@@ -27,6 +27,25 @@ To build this demo for MCU:
 make clean && make CPU=m4
 ```
 
+## Testing
+
+### Simple test
+
+Replace "test.wav" and run "./test.sh"
+
+### Realtime test
+
+Run "./realtime_test.sh" and feed audio data to .kws, for example:
+```
+dd if=test.wav bs=1 skip=44 of=.kws
+```
+Or
+```
+modprobe snd-aloop
+arecord -t raw -r 16000 -f S16_LE -c 1 -D hw:CARD=Loopback,DEV=0 .kws&
+aplay -D hw:CARD=Loopback,DEV=1 test.wav
+```
+
 ## More details about the demo
 
 This demo is running [ARM KWS](https://github.com/ARM-software/ML-KWS-for-MCU.git) on [specified wave data](Source/wav_data.h) with a pre-generated DS CNN [quantized weights](https://github.com/ARM-software/ML-KWS-for-MCU/blob/master/Deployment/Source/NN/DS_CNN/ds_cnn_weights.h).
@@ -48,8 +67,6 @@ The steps to retraining:
 6. Run "./test.sh" to check the accuracy
 7. Run "./fold_batchnorm.sh" to fuse batch-norm layers
 8. Run "./quant_dump.sh" to quantize and dump params
-9. Goto demo dir
-10. Replace "test.wav" and run "./test.sh" to test it
 
 NOTE:
 1. Step 3 and 4 can be skipped if you think the current hyper params is ok.

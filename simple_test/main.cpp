@@ -20,24 +20,34 @@
  * Description: Example code for running keyword spotting
  */
 
+#include <stdio.h>
+
 #include "kws_ds_cnn.h"
 #include "wav_data.h"
-#include "stdio.h"
 
 #define MAX_CLASS_LEN 8
 #define OUTPUT_CLASSES { "Silence", "Unknown","yes","no","up","down","left","right","on","off","stop","go" }
 
 int16_t audio_buffer[NUM_FRAMES*FRAME_SHIFT+FRAME_LEN-FRAME_SHIFT]=WAVE_DATA;
 
-int main()
+int main(int args, char**argv)
 {
   char output_class[][MAX_CLASS_LEN] = OUTPUT_CLASSES;
   KWS_DS_CNN kws(audio_buffer);
+
+  char *expect_class = NULL;
+  if (args > 1) {
+    expect_class = argv[1];
+    printf("expect: %s\n", expect_class);
+  }
 
   kws.extract_features();
   kws.classify();
   int max_ind = kws.get_top_class(kws.output);
   printf("Detected %s (%d%%)\r\n",output_class[max_ind],((int)kws.output[max_ind]*100/128));
+
+  if (expect_class && strcmp(expect_class, output_class[max_ind]))
+    printf("Wrong! expect: %s\n", expect_class);
 
   return 0;
 }
