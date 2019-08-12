@@ -42,9 +42,9 @@ else
 KWS_SRC_DIR = KWS/Deployment/Source/
 
 SOURCE_DIRS += CMSIS_5/Source/ \
-	       $(KWS_SRC_DIR)/KWS/ \
-	       $(KWS_SRC_DIR)/MFCC/ \
-	       $(KWS_SRC_DIR)/NN/ \
+	       $(KWS_SRC_DIR)/KWS_C/ \
+	       $(KWS_SRC_DIR)/MFCC_C/ \
+	       $(KWS_SRC_DIR)/NN_C/ \
 	       $(KWS_SRC_DIR)/local_NN/
 
 ifeq ($(REALTIME),1)
@@ -141,7 +141,7 @@ C_FLAGS += -std=gnu99 -c $(BUILD_FLAGS)
 CXX_FLAGS += -std=gnu++98 -c -fno-rtti -Wvla $(BUILD_FLAGS)
 ASM_FLAGS += -c -x assembler-with-cpp $(BUILD_FLAGS)
 LD_FLAGS += -Wl,--gc-sections $(COMMON_FLAGS)
-LD_LIBS += -lstdc++ -lsupc++ -lm -lc -lgcc
+LD_LIBS += -lm -lc -lgcc
 
 # Tools and Flags
 ###############################################################################

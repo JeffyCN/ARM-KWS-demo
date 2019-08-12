@@ -22,7 +22,8 @@
 
 #include <stdio.h>
 
-#include "kws_ds_cnn.h"
+#include "ds_cnn.h"
+#include "kws.h"
 #include "wav_data.h"
 
 #define MAX_CLASS_LEN 8
@@ -33,7 +34,7 @@ int16_t audio_buffer[NUM_FRAMES*FRAME_SHIFT+FRAME_LEN-FRAME_SHIFT]=WAVE_DATA;
 int main(int args, char**argv)
 {
   char output_class[][MAX_CLASS_LEN] = OUTPUT_CLASSES;
-  KWS_DS_CNN kws(audio_buffer);
+  kws_nn_init_with_buffer(audio_buffer);
 
   char *expect_class = NULL;
   if (args > 1) {
@@ -41,13 +42,15 @@ int main(int args, char**argv)
     printf("expect: %s\n", expect_class);
   }
 
-  kws.extract_features();
-  kws.classify();
-  int max_ind = kws.get_top_class(kws.output);
-  printf("Detected %s (%d%%)\r\n",output_class[max_ind],((int)kws.output[max_ind]*100/128));
+  kws_extract_features();
+  kws_classify();
+  int max_ind = kws_get_top_class(kws_output);
+  printf("Detected %s (%d%%)\r\n",output_class[max_ind],((int)kws_output[max_ind]*100/128));
 
   if (expect_class && strcmp(expect_class, output_class[max_ind]))
     printf("Wrong! expect: %s\n", expect_class);
+
+  kws_nn_deinit();
 
   return 0;
 }

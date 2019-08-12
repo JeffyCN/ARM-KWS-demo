@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TEST_AUDIO=./test.wav
-SOURCE_FILE=./simple_test/main.cpp
+SOURCE_FILE=./simple_test/main.c
 
 . ./common.sh
 
